@@ -74,8 +74,9 @@
     <p>下のボタンを押すと、アプリ（jp.co.milabo.mila_e.vaccination_scanner）が起動します。</p>
 
     <!-- a要素に直接hrefを置くと、ユーザー操作で確実に遷移できます -->
-    <a id="launchLink" class="btn" href="jp.co.milabo.mila_e.vaccination_scanner://launch_scanner"
-      rel="noopener">スキャンする</a>
+    <a href="intent://launch#Intent;scheme=milabo.mila_e.vaccination.scanner;package=milabo.mila_e.vaccination.scanner;end">
+  スキャンする
+</a>
   </main>
 
   <script>
