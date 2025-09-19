@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ワクチンスキャナー起動</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      min-height: 100dvh;
+      background: #f7f7f7;
+    }
+
+    .card {
+      background: #fff;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+      max-width: 520px;
+      width: 100%;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    button,
+    a.btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 0;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      background: #e53935;
+      color: #fff;
+    }
+
+    .sub {
+      margin-top: 14px;
+      font-size: .9rem;
+      color: #666;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <h1>ワクチンスキャナーを起動</h1>
+    <p>下のボタンを押すと、アプリ（jp.co.milabo.mila_e.vaccination_scanner）が起動します。</p>
+
+    <!-- a要素に直接hrefを置くと、ユーザー操作で確実に遷移できます -->
+    <a id="launchLink" class="btn" href="jp.co.milabo.mila_e.vaccination_scanner://launch_scanner"
+      rel="noopener">スキャンする</a>
+  </main>
+
+  <script>
+    // 参考：クリック以外の自動遷移はブラウザでブロックされがちなので、a要素でユーザー操作に任せるのが安全。
+    // ここでは端末ごとの注意書きを軽く出すだけにしています。
+    (function () {
+      const ua = navigator.userAgent.toLowerCase();
+      const isiOS = /iphone|ipad|ipod/.test(ua);
+      if (isiOS) {
+        document.getElementById('iosNote').classList.remove('hidden');
+      }
+
+      // 「もし起動しない場合」の軽いフォールバック文言更新（任意）
+      const hint = document.getElementById('hint');
+      document.getElementById('launchLink').addEventListener('click', () => {
+        // 1.5秒待っても戻ってきた（=起動しなかった）っぽい場合にヒントを少し強める
+        setTimeout(() => {
+          if (!document.hidden) {
+            hint.textContent = '起動しない場合：アプリのインストール、URLの綴り、ブラウザ設定（外部アプリを開く許可）をご確認ください。';
+          }
+        }, 1500);
+      });
+    })();
+  </script>
+</body>
+
+</html>
