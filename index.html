@@ -1,20 +1,29 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>ワクチンスキャナー起動</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     :root {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
     }
+
     body {
       margin: 0;
-      min-height: 100svh; /* iOSのUI変動で崩れにくい */
-      min-height: 100vh;  /* フォールバック */
+      min-height: 100svh;
+      /* iOSのUI変動で崩れにくい */
+      min-height: 100vh;
+      /* フォールバック */
       display: grid;
       place-items: center;
       background: #f7f7f7;
@@ -23,23 +32,36 @@
       padding-top: max(24px, env(safe-area-inset-top));
       padding-bottom: max(24px, env(safe-area-inset-bottom));
     }
+
     .card {
       background: #fff;
       padding: 28px;
       border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,.08);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
       width: min(520px, 92vw);
     }
-    h1 { margin: 0 0 12px; font-size: 1.3rem; }
-    p  { margin: 0 0 20px; color: #333; line-height: 1.6; }
-    button, a.btn {
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    button,
+    a.btn {
       display: inline-block;
       width: 100%;
       padding: 14px 18px;
       border-radius: 12px;
       border: 0;
       text-decoration: none;
-      font-size: 1.05rem; /* 16px以上で自動ズーム回避 */
+      font-size: 1.05rem;
+      /* 16px以上で自動ズーム回避 */
       font-weight: 700;
       cursor: pointer;
       text-align: center;
@@ -47,18 +69,41 @@
       color: #fff;
       line-height: 1.2;
       -webkit-tap-highlight-color: transparent;
+      margin-bottom: 12px;
     }
-    a.btn:active { transform: translateY(1px); }
-    .sub { margin-top: 14px; font-size: .9rem; color: #666; text-align: center; }
-    .hidden { display: none; }
+
+    a.btn:active {
+      transform: translateY(1px);
+    }
+
+    a.btn.secondary {
+      background: #1976d2;
+    }
+
+    .sub {
+      margin-top: 14px;
+      font-size: .9rem;
+      color: #666;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
   <main class="card">
     <h1>ワクチンスキャナーを起動</h1>
 
-    <a href="intent://scan#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
-       class="btn" id="launchLink">スキャンする</a>
+    <!-- パラメータなしでスキャン -->
+    <a href="intent://scan#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end" class="btn"
+      id="launchLinkNoParams">スキャンする（パラメータなし）</a>
+
+    <!-- パラメータありでスキャン -->
+    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&session_token=abc123def456&endpoint_url=https://dev-hospital.mila-e.jp/api/v1/pmh_vaccine_v2/barcode_scan#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
+      class="btn secondary" id="launchLinkWithParams">スキャンする（パラメータあり）</a>
 
     <!-- JSが参照する要素を追加 -->
     <p id="iosNote" class="sub hidden">iOSではリンクタップ後に切り替わらない場合があります。うまくいかない場合は再度お試しください。</p>
@@ -74,18 +119,25 @@
       if (isiOS && iosNote) iosNote.classList.remove('hidden');
 
       const hint = document.getElementById('hint');
-      const launchLink = document.getElementById('launchLink');
+      const launchLinkNoParams = document.getElementById('launchLinkNoParams');
+      const launchLinkWithParams = document.getElementById('launchLinkWithParams');
 
-      if (launchLink && hint) {
-        launchLink.addEventListener('click', () => {
-          setTimeout(() => {
-            if (!document.hidden) {
-              hint.textContent = '起動しない場合：アプリのインストール、URLの綴り、ブラウザ設定（外部アプリを開く許可）をご確認ください。';
-            }
-          }, 1500);
-        });
+      function setupLaunchLink(linkElement) {
+        if (linkElement && hint) {
+          linkElement.addEventListener('click', () => {
+            setTimeout(() => {
+              if (!document.hidden) {
+                hint.textContent = '起動しない場合：アプリのインストール、URLの綴り、ブラウザ設定（外部アプリを開く許可）をご確認ください。';
+              }
+            }, 1500);
+          });
+        }
       }
+
+      setupLaunchLink(launchLinkNoParams);
+      setupLaunchLink(launchLinkWithParams);
     })();
   </script>
 </body>
+
 </html>
