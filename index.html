@@ -98,3 +98,66 @@
     .hidden {
       display: none;
     }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <h1>ワクチンスキャナーを起動</h1>
+
+    <!-- パラメータなしでスキャン -->
+    <a href="intent://scan#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end" class="btn"
+      id="launchLinkNoParams">スキャンする（パラメータなし）</a>
+
+    <!-- パラメータありでスキャン -->
+    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&session_token=abc123def456&endpoint_url=https://dev-hospital.mila-e.jp/api/v1/pmh_vaccine_v2/barcode_scan#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
+      class="btn secondary" id="launchLinkWithParams">スキャンする（パラメータあり）</a>
+
+    <!-- 複数読み取りでスキャン -->
+    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&amp;session_token=abc123def456&amp;endpoint_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fscan_submit%2F&amp;max_scan_mode=3&amp;gtin_info_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fgtin_info%2F#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
+      class="btn multi" id="launchLinkWithMultiParams">スキャンする（複数読み取り・正常系）</a>
+
+    <!-- 複数読み取りの不正パターン（gtin_info_urlなし） -->
+    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&amp;session_token=abc123def456&amp;endpoint_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fscan_submit%2F&amp;max_scan_mode=3#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
+      class="btn invalid" id="launchLinkWithInvalidMultiParams">スキャンする（複数読み取り・不正系）</a>
+
+    <!-- JSが参照する要素を追加 -->
+    <p id="iosNote" class="sub hidden">iOSではリンクタップ後に切り替わらない場合があります。うまくいかない場合は再度お試しください。</p>
+    <p id="hint" class="sub">起動しない場合はアプリのインストール状況をご確認ください。</p>
+  </main>
+
+  <script>
+    (function () {
+      const ua = navigator.userAgent.toLowerCase();
+      const isiOS = /iphone|ipad|ipod/.test(ua);
+
+      const iosNote = document.getElementById('iosNote');
+      if (isiOS && iosNote) iosNote.classList.remove('hidden');
+
+      const hint = document.getElementById('hint');
+      const launchLinkNoParams = document.getElementById('launchLinkNoParams');
+      const launchLinkWithParams = document.getElementById('launchLinkWithParams');
+      const launchLinkWithMultiParams = document.getElementById('launchLinkWithMultiParams');
+      const launchLinkWithInvalidMultiParams = document.getElementById('launchLinkWithInvalidMultiParams');
+
+      function setupLaunchLink(linkElement) {
+        if (linkElement && hint) {
+          linkElement.addEventListener('click', () => {
+            setTimeout(() => {
+              if (!document.hidden) {
+                hint.textContent = '起動しない場合：アプリのインストール、URLの綴り、ブラウザ設定（外部アプリを開く許可）をご確認ください。';
+              }
+            }, 1500);
+          });
+        }
+      }
+
+      setupLaunchLink(launchLinkNoParams);
+      setupLaunchLink(launchLinkWithParams);
+      setupLaunchLink(launchLinkWithMultiParams);
+      setupLaunchLink(launchLinkWithInvalidMultiParams);
+    })();
+  </script>
+</body>
+
+</html>
