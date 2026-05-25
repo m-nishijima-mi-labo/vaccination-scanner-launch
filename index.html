@@ -114,11 +114,11 @@
       class="btn secondary" id="launchLinkWithParams">スキャンする（パラメータあり）</a>
 
     <!-- 複数読み取りでスキャン -->
-    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&amp;session_token=abc123def456&amp;endpoint_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fscan_submit%2F&amp;max_scan_mode=3&amp;gtin_info_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fgtin_info%2F#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
+    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&amp;session_token=abc123def456&amp;endpoint_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fscan_submit%2F&amp;max_scan_count=3&amp;gtin_info_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fgtin_info%2F#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
       class="btn multi" id="launchLinkWithMultiParams">スキャンする（複数読み取り・正常系）</a>
 
     <!-- 複数読み取りの不正パターン（gtin_info_urlなし） -->
-    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&amp;session_token=abc123def456&amp;endpoint_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fscan_submit%2F&amp;max_scan_mode=3#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
+    <a href="intent://scan?session_id=123e4567-e89b-12d3-a456-426614174000&amp;session_token=abc123def456&amp;endpoint_url=https%3A%2F%2Fdev-hospital.mila-e.jp%2Fapi%2Fv1%2Fpmh_barcode_scan%2Fscan_submit%2F&amp;max_scan_count=3#Intent;scheme=mila-e-barcode;package=milabo.mila_e.vaccination.scanner;end"
       class="btn invalid" id="launchLinkWithInvalidMultiParams">スキャンする（複数読み取り・不正系）</a>
 
     <!-- JSが参照する要素を追加 -->
